@@ -100,7 +100,7 @@ fun botonEmpezar(){
                 }
             }
         ) {
-            Text(text = "Start")
+            Text(text = "EMPEZAR")
         }
     }
 }
@@ -140,7 +140,6 @@ fun fraseVerdaderaFalsa(){
  */
 @Composable
 fun frase(){
-    // row de la frase
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -180,7 +179,6 @@ fun botonFalsoVerdadero(respuesta: Boolean){
                 comprobarFrase(respuesta)
             }
         },
-        // para que los botones tengan un poco de espacio
         modifier = Modifier
             .padding(end = 10.dp)
     ) {
@@ -214,10 +212,10 @@ fun puntuacion(){
  */
 fun comprobarFrase(respuesta: Boolean){
     if (respuesta == fraseActual.value.verdadero){
-        puntuacion.value += 10
+        puntuacion.value += 20
     } else {
         // fallo
-        puntuacion.value -= 5
+        puntuacion.value -= 10
         if (puntuacion.value < 0){
             puntuacion.value = 0
         }
