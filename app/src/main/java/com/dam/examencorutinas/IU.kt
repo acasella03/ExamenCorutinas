@@ -110,8 +110,8 @@ fun cuentaAtras(){
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentSize(Alignment.Center)
-            .padding(0.dp, 0.dp, 0.dp, 50.dp)
+            //.wrapContentSize(Alignment.Center)
+            .padding(0.dp, 30.dp, 0.dp, 50.dp)
     ) {
         Text(text = "Cuenta atras:")
     }
@@ -155,7 +155,7 @@ fun frase(){
  */
 @Composable
 fun botonesFalsoVerdadero(){
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentSize(Alignment.Center)
