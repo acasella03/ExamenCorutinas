@@ -1,70 +1,48 @@
-# Juego de Verdadero o Falso
+# README - MVVM en JuegoViewModel
 
-Este código implementa un juego simple de Verdadero o Falso utilizando Jetpack Compose en Kotlin. El juego presenta frases y el jugador debe decidir si son verdaderas o falsas. Aquí hay una explicación del código y cómo usarlo:
+## Descripción General
 
-## Estructura del Código
-El código consta de varias partes, incluyendo la definición de datos, la lógica del juego y la interfaz de usuario.
+Este código implementa el patrón de arquitectura MVVM (Model-View-ViewModel) en el contexto de un juego simple. El juego cuenta con una cuenta regresiva, frases aleatorias, y botones de respuesta verdadero/falso. La lógica del juego y los datos están encapsulados en un ViewModel llamado `JuegoViewModel`. La interfaz de usuario (UI) se define en la función `IU`` utilizando Jetpack Compose.
 
-```Datos
-data class Frase(var texto: String, var verdadero: Boolean)
-var frases: MutableList<Frase> = mutableListOf()
-var fraseActual: MutableState<Frase> = mutableStateOf(Frase("-",true))
-var cuentaAtras: MutableState<Int> = mutableStateOf(20)
-var puntuacion: MutableState<Int> = mutableStateOf(0)
-var state: State = State.ESPERANDO
-```
+## Componentes Principales
 
-**Frase**: Una clase de datos que representa una frase con un texto y una propiedad booleana que indica si es verdadera o falsa.
+### MainActivity
+En la actividad principal, se crea una instancia de **JuegoViewModel** y se establece como contenido principal de la actividad. La interfaz de usuario se compone principalmente de un conjunto de funciones Compose que se encargan de diferentes aspectos de la interfaz.
 
-**frases**: Una lista mutable que contiene varias instancias de Frase.
+### Datos
+Una clase objeto que almacena los datos del juego, como el estado actual, la cuenta regresiva, la puntuación y la lista de frases. También incluye una función **aux** para inicializar y cargar frases en la lista.
 
-**fraseActual**: Una variable de estado que representa la frase actual que se muestra en el juego.
-cuentaAtras: Una variable de estado que cuenta hacia atrás el tiempo de juego.
+### State
+Un enumerado que define los posibles estados del juego, como **JUGANDO** y **ESPERANDO**.
 
-**puntuacion**: Una variable de estado que almacena la puntuación del jugador.
+### IU
+La función principal que compone la interfaz de usuario utilizando Compose. Se utiliza el **JuegoViewModel** para interactuar con la lógica del juego.
 
-**state**: Una enumeración que define los estados del juego (JUGANDO y ESPERANDO).
+### JuegoViewModel
+La clase ViewModel que gestiona la lógica del juego y la comunicación entre la interfaz de usuario y los datos del juego.
 
-Estados del Juego
-```
-enum class State {
-    JUGANDO, ESPERANDO
-}
-```
-**State**: Enumeración que define los estados del juego.
+## Flujo del Juego
+1. **Inicialización del Juego (`inicializarJuego``)**: Inicia el juego estableciendo el estado inicial, reiniciando la cuenta regresiva y la puntuación, y cargando frases.
 
-Lógica del Juego
-```
-fun aux(){
-    // ... (Introducción de frases en la lista y asignación aleatoria de una frase)
-}
+2. **Comprobación de Frases (`comprobarFrase`)**: Verifica si la respuesta dada por el usuario es correcta y actualiza la puntuación en consecuencia.
 
-fun comprobarFrase(respuesta: Boolean){
-    // ... (Comprobación de si la respuesta es correcta y actualización de la puntuación)
-}
-```
-**aux()**: Función que introduce frases en la lista y asigna una frase aleatoria.
+3. **Cuenta Regresiva (`cuentaAtras`)**: Inicia una cuenta regresiva utilizando coroutines. La cuenta regresiva se actualiza cada segundo hasta que alcanza cero o hasta que el estado del juego cambie a **ESPERANDO**.
 
-**comprobarFrase(respuesta: Boolean)**: Función que verifica si la respuesta del jugador es correcta y actualiza la puntuación.
+4. **Asignación de Frase Aleatoria (`asignarFraseAleatoria`)**: Asigna una nueva frase aleatoria para que el usuario responda.
 
-Interfaz de Usuario
-```
-@Composable
-fun IU(){
-    // ... (Creación de la interfaz de usuario, incluyendo la cuenta atrás, la frase, la puntuación y el botón de inicio)
-}
-```
-**IU()**: Función componible que crea la interfaz de usuario del juego.
+## Interfaz de Usuario (Compose)
+1. **Botón Empezar (`botonEmpezar`)**: Permite al usuario empezar la cuenta regresiva si el juego está en estado de espera.
 
-## Uso del Juego
-1. **Inicialización de Frases**: Antes de comenzar el juego, llama a la función aux() para introducir frases en la lista.
+2. **Cuenta Atrás (`cuentaAtras`)**: Muestra la cuenta regresiva actualizada en tiempo real.
 
-2. **Interfaz de Usuario**: Utiliza la función IU() para mostrar la interfaz de usuario del juego, que incluye la cuenta atrás, la frase actual, la puntuación y el botón de inicio.
+3. **Frase (`frase`)**: Muestra la frase actual que el usuario debe evaluar como verdadera o falsa.
 
-3. **Inicio del Juego**: Haz clic en el botón "Start" para iniciar el juego. Solo puedes hacer clic en el botón cuando el juego está en el estado ESPERANDO. La cuenta atrás comenzará, y debes seleccionar "Verdadero" o "Falso" para cada frase mostrada.
+4. **Botones Verdadero/Falso (`botonesFalsoVerdadero`)**: Botones que permiten al usuario responder a la frase actual.
 
-4. **Puntuación**: La puntuación se actualiza según tus respuestas. Cada respuesta correcta suma 10 puntos, y cada respuesta incorrecta resta 5 puntos. La puntuación mínima es 0.
+5. **Puntuación (`puntuacion`)**: Muestra la puntuación actual del usuario.
 
-5. **Final del Juego**: Una vez que la cuenta atrás llega a cero, el juego vuelve al estado ESPERANDO y puedes reiniciarlo presionando nuevamente el botón "Start".
+## Uso de Coroutines
+Se utiliza el viewModelScope para lanzar coroutines en el JuegoViewModel. La cuenta regresiva utiliza una coroutine para actualizar la cuenta atrás cada segundo.
 
-#### ¡Disfruta jugando al Verdadero o Falso!
+## Captura de pantalla:
+![captura](../CamputaPnatalla.png)
