@@ -15,6 +15,7 @@ import com.dam.examencorutinas.ui.theme.ExamenCorutinasTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val miViewModel = JuegoViewModel()
         setContent {
             ExamenCorutinasTheme {
                 // A surface container using the 'background' color from the theme
@@ -22,7 +23,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    IU()
+                    IU(miViewModel = miViewModel)
                 }
             }
         }

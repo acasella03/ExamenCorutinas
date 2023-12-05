@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class JuegoViewModel: ViewModel() {
 
     /**
-     * Inicializo el juego.
+     * Inicializo el juego con coroutine.
      */
     fun inicializarJuego() {
         Datos.state = State.ESPERANDO
@@ -43,7 +43,7 @@ class JuegoViewModel: ViewModel() {
     fun cuentaAtras() {
         Datos.state = State.JUGANDO
         viewModelScope.launch {
-            while (Datos.cuentaAtras.value > 0) {
+            while (Datos.cuentaAtras.value > 0 && Datos.state == State.JUGANDO) {
                 delay(1000)
                 Datos.cuentaAtras.value--
             }
@@ -52,23 +52,9 @@ class JuegoViewModel: ViewModel() {
     }
 
     /**
-     * Comprueba si la cuenta atrás ha terminado.
-     */
-    fun comprobarCuentaAtras(): Boolean {
-        return Datos.cuentaAtras.value == 0
-    }
-
-    /**
      * Asigna una frase aleatoria.
      */
     fun asignarFraseAleatoria() {
         Datos.fraseActual.value = Datos.frases.random()
-    }
-
-    /**
-     * Puntuación.
-     */
-    fun puntuacion(): Int {
-        return Datos.puntuacion.value
     }
 }
