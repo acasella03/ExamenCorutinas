@@ -70,7 +70,7 @@ fun cuentaAtras(miViewModel:JuegoViewModel){
             .padding(0.dp, 0.dp, 0.dp, 50.dp)
     ){
         Text(
-            text = "Cuenta atrás: ${Datos.cuentaAtras.value.toString()}",
+            text = "${Datos.cuentaAtras.value.toString()}",
             fontSize = 50.sp
         )
     }
