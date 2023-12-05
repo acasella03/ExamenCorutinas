@@ -64,4 +64,11 @@ class JuegoViewModel: ViewModel() {
     fun asignarFraseAleatoria() {
         Datos.fraseActual.value = Datos.frases.random()
     }
+
+    /**
+     * Puntuación.
+     */
+    fun puntuacion(): Int {
+        return Datos.puntuacion.value
+    }
 }

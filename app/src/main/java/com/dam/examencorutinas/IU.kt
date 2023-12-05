@@ -22,53 +22,45 @@ import kotlinx.coroutines.launch
 
 // crea toda la interfaz de usuario
 @Composable
-fun IU(){
+fun IU(miViewModel:JuegoViewModel){
     Column {
-        cuentaAtras()
-        fraseVerdaderaFalsa()
-        puntuacion()
-        botonEmpezar()
+        cuentaAtras( miViewModel = JuegoViewModel())
+        fraseVerdaderaFalsa( miViewModel = JuegoViewModel())
+        puntuacion(miViewModel = JuegoViewModel())
+        botonEmpezar( miViewModel = JuegoViewModel())
     }
 }
 
-// crea el boton start
+/**
+ * Creación del boton empezar
+ */
 @Composable
-fun botonEmpezar(){
-    // para crear el objeto que nos permite hacer una corrutina
-    val iuScope = rememberCoroutineScope()
+fun botonEmpezar(miViewModel:JuegoViewModel){
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentSize(Alignment.Center)
-            .padding(0.dp, 20.dp, 0.dp, 50.dp)
-    ) {
+            .padding(0.dp, 0.dp, 0.dp, 50.dp)
+    ){
         Button(
             onClick = {
-                // para que solo se pueda dar al boton una vez
-                if(state == State.ESPERANDO){
-                    // reiniciar la cuenta atras y la puntuacion
-                    cuentaAtras.value = 20
-                    puntuacion.value = 0
-                    // iniciar la cuenta atras
-                    iuScope.launch {
-                        state = State.JUGANDO
-                        while (cuentaAtras.value > 0){
-                            delay(1000)
-                            cuentaAtras.value -= 1
-                        }
-                        state = State.ESPERANDO
-                    }
-                    aux()
+                if (Datos.state==State.ESPERANDO) {
+                    miViewModel.cuentaAtras()
                 }
-            }
+            },
+            modifier = Modifier
+                .padding(end = 10.dp)
         ) {
-            Text(text = "EMPEZAR")
+            Text(text = "Empezar")
         }
     }
 }
-// Crea el texto de la cuenta atras y el numero de la cuenta atras
+
+/**
+ * Creación del texto de la cuenta atras
+ */
 @Composable
-fun cuentaAtras(){
+fun cuentaAtras(miViewModel:JuegoViewModel){
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -83,16 +75,17 @@ fun cuentaAtras(){
             .padding(0.dp, 0.dp, 0.dp, 50.dp)
     ){
         Text(
-            text = cuentaAtras.value.toString(),
+            text = "Cuenta atrás: ${miViewModel.cuentaAtras()}",
             fontSize = 50.sp
         )
     }
 }
-
-// crea la frase y los botones verdadero y falso
+/**
+ * Asignar una frase aleatoria y crear los botones verdadero y falso
+ */
 @Composable
-fun fraseVerdaderaFalsa(){
-    frase()
+fun fraseVerdaderaFalsa(miViewModel:JuegoViewModel){
+    miViewModel.asignarFraseAleatoria()
     botonesFalsoVerdadero()
 }
 
@@ -100,14 +93,14 @@ fun fraseVerdaderaFalsa(){
  * Creacion de la frase
  */
 @Composable
-fun frase(){
+fun frase(miViewModel:JuegoViewModel){
     Row (
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentSize(Alignment.Center)
             .padding(0.dp, 0.dp, 0.dp, 50.dp)
     ){
-        Text(text = fraseActual.value.texto)
+        Text(text ="Frase: ${miViewModel.asignarFraseAleatoria()}", fontSize = 20.sp)
     }
 }
 
@@ -123,9 +116,9 @@ fun botonesFalsoVerdadero(){
             .padding(0.dp, 0.dp, 0.dp, 50.dp)
     ){
         // boton verdadero
-        botonFalsoVerdadero(true)
+        botonFalsoVerdadero(true, miViewModel = JuegoViewModel())
         // boton falso
-        botonFalsoVerdadero(false)
+        botonFalsoVerdadero(false, miViewModel = JuegoViewModel())
     }
 }
 
@@ -133,11 +126,11 @@ fun botonesFalsoVerdadero(){
  * Boton que dependiendo del parametro crea el boton verdadero o falso
  */
 @Composable
-fun botonFalsoVerdadero(respuesta: Boolean){
+fun botonFalsoVerdadero(respuesta: Boolean, miViewModel:JuegoViewModel){
     Button(
         onClick = {
-            if (state == State.JUGANDO) {
-                comprobarFrase(respuesta)
+            if (Datos.state== State.JUGANDO) {
+                miViewModel.comprobarFrase(respuesta)
             }
         },
         modifier = Modifier
@@ -151,7 +144,7 @@ fun botonFalsoVerdadero(respuesta: Boolean){
  * Creación del texto de la puntuacion y el numero de la puntuacion
  */
 @Composable
-fun puntuacion(){
+fun puntuacion(miViewModel:JuegoViewModel){
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -162,24 +155,9 @@ fun puntuacion(){
             fontSize = 20.sp
         )
         Text(
-            text = puntuacion.value.toString(),
+            text = "Puntiación: ${Datos.puntuacion.value}",
             fontSize = 20.sp
         )
     }
 }
 
-/**
- * Comprobacion de si la frase es verdadera o falsa
- */
-fun comprobarFrase(respuesta: Boolean){
-    if (respuesta == fraseActual.value.verdadero){
-        puntuacion.value += 20
-    } else {
-        // fallo
-        puntuacion.value -= 10
-        if (puntuacion.value < 0){
-            puntuacion.value = 0
-        }
-    }
-    aux()
-}
