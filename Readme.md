@@ -45,4 +45,4 @@ La clase ViewModel que gestiona la lógica del juego y la comunicación entre la
 Se utiliza el viewModelScope para lanzar coroutines en el JuegoViewModel. La cuenta regresiva utiliza una coroutine para actualizar la cuenta atrás cada segundo.
 
 ## Captura de pantalla:
-![captura](../CamputaPnatalla.png)
+![captura](CamputaPnatalla.png)
